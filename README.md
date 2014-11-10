@@ -8,6 +8,7 @@ It is meant to be used as a replacement for javascript compressor.
 Source maps are useful for debugging javascript and many errors monitoring services utilize them,
 for example [Rollbar](https://rollbar.com/docs/source-maps/).
 
+For Rails 3.2 see: https://github.com/leifcr/uglifier_with_source_maps
 
 ## Installation
 
