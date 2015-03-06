@@ -44,7 +44,17 @@ These subdirs may be configured:
 You can optionally gzip your maps and sources as well (since these files live outside of the assets pipeline this won't happen automatically):
 
     config.assets.sourcemaps_gzip = true
-    config.assets.uncompressed_gzip = true
+
+By default maps and sources are defined relatively and will be fetched from the same domain your js file is served from. If you are using a CDN you may not want this - instead you might want to use a direct link to your site so you can more easily implement IP or Basic Auth protection:
+
+    # set to a url - js will be served from 'http://cdn.host.com' but source map links will use 'http://some.host.com/'
+
+    config.assets.sourcemaps_url_root = 'http://some.host.com/'
+
+If you use CloudFront you might want to generate a signed url for these files that limits access based on IP address. You can do that by setting sourcemaps_url_root to a Proc and handling your URL signing there:
+
+    # using a Proc - see the AWS SDK docs for everything required to make this work
+    config.assets.sourcemaps_url_root = Proc.new { |file| MyApp.generate_a_signed_url_for file }
 
 ## Example
 

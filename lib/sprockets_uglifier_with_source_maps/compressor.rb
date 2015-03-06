@@ -6,10 +6,11 @@ module SprocketsUglifierWithSM
       compressed_data, sourcemap = Uglifier.new(options).compile_with_map(data)
 
       uncompressed_filename = File.join(Rails.application.config.assets.prefix, Rails.application.config.assets.uncompressed_prefix, "#{context.logical_path}-#{digest(data)}.js")
+      uncompressed_url = filename_to_url uncompressed_filename
 
       sourcemap = JSON.parse(sourcemap)
       sourcemap['file'] = "#{context.logical_path}.js"
-      sourcemap['sources'] = [uncompressed_filename]
+      sourcemap['sources'] = [uncompressed_url]
       sourcemap = sourcemap.to_json
 
       sourcemap_filename = File.join(Rails.application.config.assets.prefix, Rails.application.config.assets.sourcemaps_prefix, "#{context.logical_path}-#{digest(sourcemap)}.js.map")
@@ -20,22 +21,33 @@ module SprocketsUglifierWithSM
       File.open(sourcemap_path, 'w') { |f| f.write sourcemap }
       File.open(uncompressed_path, 'w') { |f| f.write data }
 
-      to_gzip = []
-      (to_gzip << sourcemap_path) if Rails.application.config.assets.sourcemaps_gzip
-      (to_gzip << uncompressed_path) if Rails.application.config.assets.uncompressed_gzip
-
-      to_gzip.each do |f|
-        Zlib::GzipWriter.open("#{f}.gz") do |gz|
-          gz.mtime = File.mtime(f)
-          gz.orig_name = f
-          gz.write IO.binread(f)
+      if Rails.application.config.assets.sourcemaps_gzip
+        [sourcemap_path,uncompressed_path ].each do |f|
+          Zlib::GzipWriter.open("#{f}.gz") do |gz|
+            gz.mtime = File.mtime(f)
+            gz.orig_name = f
+            gz.write IO.binread(f)
+          end
         end
       end
 
-      compressed_data.concat "\n//# sourceMappingURL=#{sourcemap_filename}\n"
+      sourcemap_url = filename_to_url sourcemap_filename
+      compressed_data.concat "\n//# sourceMappingURL=#{sourcemap_url}\n"
     end
 
     private
+
+    def filename_to_url(filename)
+      url_root = Rails.application.config.assets.sourcemaps_url_root
+      case url_root
+      when FalseClass
+        filename
+      when Proc
+        url_root.call filename
+      else
+        File.join url_root.to_s, filename
+      end
+    end
 
     def digest(io)
       Rails.application.assets.digest.update(io).hexdigest
