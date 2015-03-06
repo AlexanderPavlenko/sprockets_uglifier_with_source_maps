@@ -20,6 +20,18 @@ module SprocketsUglifierWithSM
       File.open(sourcemap_path, 'w') { |f| f.write sourcemap }
       File.open(uncompressed_path, 'w') { |f| f.write data }
 
+      to_gzip = []
+      (to_gzip << sourcemap_path) if Rails.application.config.assets.sourcemaps_gzip
+      (to_gzip << uncompressed_path) if Rails.application.config.assets.uncompressed_gzip
+
+      to_gzip.each do |f|
+        Zlib::GzipWriter.open("#{f}.gz") do |gz|
+          gz.mtime = File.mtime(f)
+          gz.orig_name = f
+          gz.write IO.binread(f)
+        end
+      end
+
       compressed_data.concat "\n//# sourceMappingURL=#{sourcemap_filename}\n"
     end
 

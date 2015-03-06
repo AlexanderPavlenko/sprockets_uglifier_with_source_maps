@@ -33,7 +33,7 @@ In your Rails applications environment configuration:
 
 If you need to pass options to uglifier:
 
-    config.assets.uglifier = {output: {beautify: true, indent_level: 2}, compress: {angular: true}} 
+    config.assets.uglifier = {output: {beautify: true, indent_level: 2}, compress: {angular: true}}
 
 Your assets will be built as normal, also maps and concatenated sources will be provided as well in `public/assets/maps` and `public/assets/sources`.
 These subdirs may be configured:
@@ -41,6 +41,10 @@ These subdirs may be configured:
     config.assets.sourcemaps_prefix = 'my_maps'
     config.assets.uncompressed_prefix = 'my_sources'
 
+You can optionally gzip your maps and sources as well (since these files live outside of the assets pipeline this won't happen automatically):
+
+    config.assets.sourcemaps_gzip = true
+    config.assets.uncompressed_gzip = true
 
 ## Example
 

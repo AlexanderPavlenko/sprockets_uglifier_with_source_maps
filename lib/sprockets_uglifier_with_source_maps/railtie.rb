@@ -7,6 +7,8 @@ module SprocketsUglifierWithSM
       config = app.config
       config.assets.sourcemaps_prefix ||= 'maps'
       config.assets.uncompressed_prefix ||= 'sources'
+      config.assets.sourcemaps_gzip ||= false
+      config.assets.uncompressed_gzip ||= false
     end
   end
 end
