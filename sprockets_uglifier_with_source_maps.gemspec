@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.email         = ['alerticus@gmail.com']
   spec.summary       = %q{Create javascript source maps for your Rails 4.2 applications}
   spec.description   = %q{sprockets_uglifier_with_source_maps creates source maps for your javascript assets along with their compression using uglifier.}
-  spec.homepage      = 'https://github.com/AlexanderPavlenko/uglifier_with_source_maps'
+  spec.homepage      = 'https://github.com/AlexanderPavlenko/sprockets_uglifier_with_source_maps'
   spec.license       = 'MIT'
 
   spec.files         = `git ls-files -z`.split("\x0")
