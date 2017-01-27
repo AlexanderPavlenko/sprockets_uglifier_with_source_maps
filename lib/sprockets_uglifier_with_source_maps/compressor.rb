@@ -9,15 +9,16 @@ module SprocketsUglifierWithSM
     def initialize(options = {})
       # merge in any options passed in from our rails configuration - i wish
       # rails actually did this by default :/
-      options = options.merge(DEFAULTS).merge!(Rails.application.config.assets.uglifier.to_h)
-      super options
+      @options = options.merge(DEFAULTS).merge!(Rails.application.config.assets.uglifier.to_h)
+      super @options
     end
 
     def call(input)
       data = input.fetch(:data)
       name = input.fetch(:name)
 
-      compressed_data, sourcemap = @uglifier.compile_with_map(data)
+      uglifier = Sprockets::Autoload::Uglifier.new(@options)
+      compressed_data, sourcemap = uglifier.compile_with_map(data)
 
       uncompressed_filename = File.join(Rails.application.config.assets.prefix, Rails.application.config.assets.uncompressed_prefix, "#{name}-#{digest(data)}.js")
       uncompressed_url      = filename_to_url uncompressed_filename
