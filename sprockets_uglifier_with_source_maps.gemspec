@@ -18,7 +18,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
 
   spec.add_runtime_dependency 'sprockets-rails', '~> 3.0'
-  spec.add_runtime_dependency 'uglifier', '~> 2.5'
+  spec.add_runtime_dependency 'uglifier', '>= 2.5'
   spec.add_development_dependency 'bundler'
   spec.add_development_dependency 'rake'
 end
