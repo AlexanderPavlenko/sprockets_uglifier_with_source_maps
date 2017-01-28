@@ -1,6 +1,6 @@
 # SprocketsUglifierWithSourceMaps
 
-Create source maps when compressing assets in your Rails 4.2 applications.
+Create source maps when compressing assets in your Rails applications.
 
 This gem uses Uglifier to create source maps for your concatenated javascripts in Rails.
 It is meant to be used as a replacement for javascript compressor.
@@ -8,6 +8,7 @@ It is meant to be used as a replacement for javascript compressor.
 Source maps are useful for debugging javascript and many errors monitoring services utilize them,
 for example [Rollbar](https://rollbar.com/docs/source-maps/).
 
+Rails versions supported: 4.2, 5.
 For Rails 3.2 see: https://github.com/leifcr/uglifier_with_source_maps
 
 ## Installation

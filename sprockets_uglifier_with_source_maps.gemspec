@@ -7,7 +7,7 @@ Gem::Specification.new do |spec|
   spec.version       = SprocketsUglifierWithSM::VERSION
   spec.authors       = ['Alexander Pavlenko']
   spec.email         = ['alerticus@gmail.com']
-  spec.summary       = %q{Create javascript source maps for your Rails 4.2 applications}
+  spec.summary       = %q{Create javascript source maps for your Rails applications}
   spec.description   = %q{sprockets_uglifier_with_source_maps creates source maps for your javascript assets along with their compression using uglifier.}
   spec.homepage      = 'https://github.com/AlexanderPavlenko/sprockets_uglifier_with_source_maps'
   spec.license       = 'MIT'
