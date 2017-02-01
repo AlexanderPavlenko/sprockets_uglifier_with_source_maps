@@ -25,7 +25,6 @@ Or install it yourself as:
 
     $ gem install sprockets_uglifier_with_source_maps
 
-
 ## Usage
 
 In your Rails applications environment configuration:
@@ -42,9 +41,13 @@ These subdirs may be configured:
     config.assets.sourcemaps_prefix = 'my_maps'
     config.assets.uncompressed_prefix = 'my_sources'
 
-You can optionally gzip your maps and sources as well (since these files live outside of the assets pipeline this won't happen automatically):
+Alternatively, sources can be embedded into sourcemaps' `sourcesContent` field:
 
-    config.assets.sourcemaps_gzip = true
+    config.assets.sourcemaps_embed_source = true
+
+You can optionally skip gzipping your maps and sources:
+
+    config.assets.sourcemaps_gzip = false
 
 By default maps and sources are defined relatively and will be fetched from the same domain your js file is served from. If you are using a CDN you may not want this - instead you might want to use a direct link to your site so you can more easily implement IP or Basic Auth protection:
 
@@ -75,6 +78,9 @@ If you use CloudFront you might want to generate a signed url for these files th
     $ head -c115 public/assets/maps/application-a3aff92c860f3876615c2d158f724865.js.map
     {"version":3,"file":"application.js","sources":["/assets/sources/application-73a007cf2d51c423a4420b649344b52e.js"],
 
+## Troubleshooting
+
+If sourcemaps are not generated, try `rm -rf tmp/cache`.
 
 ## Contributing
 
