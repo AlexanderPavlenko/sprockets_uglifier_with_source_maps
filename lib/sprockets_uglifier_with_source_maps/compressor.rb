@@ -36,7 +36,6 @@ module SprocketsUglifierWithSM
       end
       sourcemap['file'] = "#{name}.js"
 
-      sourcemap_json     = sourcemap.to_json
       sourcemap_filename = File.join(Rails.application.config.assets.prefix, Rails.application.config.assets.sourcemaps_prefix, "#{name}-#{digest(sourcemap_json)}.js.map")
       sourcemap_path     = File.join(Rails.public_path, sourcemap_filename)
       sourcemap_url      = filename_to_url(sourcemap_filename)
@@ -49,34 +48,33 @@ module SprocketsUglifierWithSM
     end
 
     private
-
-    def gzip?
-      config = Rails.application.config.assets
-      config.sourcemaps_gzip || (config.sourcemaps_gzip.nil? && config.gzip)
-    end
-
-    def gzip_file(path)
-      Zlib::GzipWriter.open("#{path}.gz") do |gz|
-        gz.mtime     = File.mtime(path)
-        gz.orig_name = path
-        gz.write IO.binread(path)
+      def gzip?
+        config = Rails.application.config.assets
+        config.sourcemaps_gzip || (config.sourcemaps_gzip.nil? && config.gzip)
       end
-    end
 
-    def filename_to_url(filename)
-      url_root = Rails.application.config.assets.sourcemaps_url_root
-      case url_root
-      when FalseClass
-        filename
-      when Proc
-        url_root.call filename
-      else
-        File.join url_root.to_s, filename
+      def gzip_file(path)
+        Zlib::GzipWriter.open("#{path}.gz") do |gz|
+          gz.mtime     = File.mtime(path)
+          gz.orig_name = path
+          gz.write IO.binread(path)
+        end
       end
-    end
 
-    def digest(io)
-      Sprockets::DigestUtils.pack_hexdigest Sprockets::DigestUtils.digest(io)
-    end
+      def filename_to_url(filename)
+        url_root = Rails.application.config.assets.sourcemaps_url_root
+        case url_root
+        when FalseClass
+          filename
+        when Proc
+          url_root.call filename
+        else
+          File.join url_root.to_s, filename
+        end
+      end
+
+      def digest(io)
+        Sprockets::DigestUtils.pack_hexdigest Sprockets::DigestUtils.digest(io)
+      end
   end
 end
